@@ -55,7 +55,7 @@ const Signin = () => {
         />
 
         <div className="mb-6">
-          <SubmitButton text="Sign In" onClick={handleSubmit} />
+        <SubmitButton text="Sign In" onClick={() => handleSubmit({ preventDefault: () => {} } as React.FormEvent<HTMLFormElement>)} />
         </div>
       </form>
 

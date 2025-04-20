@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QuantityButton from '@/components/QuantityButton';
 import Text from '@/components/Text';
+import { useCartStore } from '@/store/cartStore';
 interface MenuItem {
   _id: string;
   name: string;
@@ -12,85 +13,49 @@ interface MenuItem {
   imageUrl: string;
 }
 
-interface Cart {
-  [key: string]: number;
-}
-
 const Menu = () => {
+  const [search, setSearch] = useState('');
+  const cart = useCartStore((state) => state.cart);
+  const fetchCart = useCartStore((state) => state.fetchCart);
+  const updateItem = useCartStore((state) => state.updateItem);
+
+const handleAdd = (item: MenuItem) => {
+  updateItem(item._id, 1);
+};
+
+const handleDecrease = (item: MenuItem) => {
+  updateItem(item._id, -1);
+};
+
+const getQuantity = (itemId: string) => {
+  const cartItem = cart.find((item) => item.itemId === itemId);
+  return cartItem ? cartItem.quantity : 0;
+};
   const navigate = useNavigate();
   const [menuItems, setMenuItems] = useState<{ [category: string]: MenuItem[] }>({});
-  const [cart, setCart] = useState<Cart>({});
-
-  const handleAdd = async (item: MenuItem) => {
-    setCart((prevCart) => {
-      const updatedQuantity = (prevCart[item._id] || 0) + 1;
-      // Make the API request using the updated quantity
-      axios
-        .post(
-          'http://localhost:3000/user/cart',
-          { itemId: item._id, quantity: updatedQuantity },
-          {
-            headers: {
-              Authorization: `${localStorage.getItem('token')}`,
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-
-      return { ...prevCart, [item._id]: updatedQuantity };
-    });
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearch(value);
   };
-
-  const handleDecrease = async (item: MenuItem) => {
-    setCart((prevCart) => {
-      const updatedQuantity = (prevCart[item._id] || 0) - 1;
-      if (updatedQuantity >= 0) {
-        // Make the API request using the updated quantity
-        axios
-          .post(
-            'http://localhost:3000/user/cart',
-            { itemId: item._id, quantity: updatedQuantity },
-            {
-              headers: {
-                Authorization: `${localStorage.getItem('token')}`,
-              },
-            }
-          )
-          .then((response) => {
-            console.log(response.data);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-
-        return { ...prevCart, [item._id]: updatedQuantity };
-      }
-      return prevCart;
-    });
-  };
-
   useEffect(() => {
-    const fetchMenuItems = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/user/menu', {
+        await fetchCart();
+        const response = await axios.get(`http://localhost:3000/user/menu?filter=${search}`, {
           headers: {
             Authorization: `${localStorage.getItem('token')}`,
           },
         });
-
-        // Set the menu items with categories as keys
+  
         setMenuItems(response.data);
       } catch (e) {
         console.log(e);
       }
     };
-    fetchMenuItems();
-  }, []);
+  
+    fetchData();
+  }, [search]);
+  
 
   const handleCart = () => {
     navigate('/cart');
@@ -98,9 +63,16 @@ const Menu = () => {
 
   return (
     <div className="max-w-screen-lg mx-auto p-6">
+      <div className="mb-6 flex justify-center">
+        <input
+          type="text"
+          placeholder="Search for items..."
+          value={search}
+          onChange={handleSearchChange}
+          className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
       <h1 className="text-3xl font-semibold text-center text-gray-800 mb-6">Menu</h1>
-
-      {/* Iterate over categories and their respective items */}
       {Object.keys(menuItems).length === 0 ? (
         <p>No menu items available. Please try again later.</p>
       ) : (
@@ -115,7 +87,7 @@ const Menu = () => {
                   <Text text={`₹${item.price}`} />
                   <div className="flex items-center space-x-4 mb-4">
                     <QuantityButton text="-" onClick={() => handleDecrease(item)} />
-                    <span className="text-xl">{cart[item._id] || 0}</span>
+                    <span className="text-xl">{getQuantity(item._id) || 0}</span>
                     <QuantityButton text="+" onClick={() => handleAdd(item)} />
                   </div>
                 </div>

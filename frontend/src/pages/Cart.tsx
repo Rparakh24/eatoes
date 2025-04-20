@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Text from '@/components/Text';
 import QuantityButton from '@/components/QuantityButton';
 import SubmitButton from '@/components/SubmitButton';
+import { backend_url } from '@/config';
 interface CartItem {
   itemId: string;
   name: string;
@@ -19,7 +20,7 @@ const Cart = () => {
 
   const fetchCart = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/user/cart", {
+        const res = await axios.get(`${backend_url}/user/cart`, {
         headers: {
           Authorization: `${localStorage.getItem("token")}`,
         },
@@ -39,7 +40,7 @@ const Cart = () => {
   const updateCart = async (itemId: string, change: number) => {
     try {
       await axios.post(
-        "http://localhost:3000/user/cart",
+        `${backend_url}/user/cart`,
         { itemId, quantity: change }, // we're sending +1 or -1
         {
           headers: {

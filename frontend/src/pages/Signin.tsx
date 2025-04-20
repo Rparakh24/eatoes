@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import InputField from '../components/InputField';
 import SubmitButton from '../components/SubmitButton';
 import SignLink from '../components/SignLink';
+import { backend_url } from '@/config';
 const Signin = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -22,7 +23,7 @@ const Signin = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/user/signin", formData);
+      const response = await axios.post(`${backend_url}/user/signin`, formData);
       const token = response.data.token;
       localStorage.setItem("token", token);
       navigate("/menu");

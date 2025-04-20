@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ConfirmationCard from "@/components/ConfirmationCard";
-
+import { backend_url } from "@/config";
 interface Order {
   id: string;
   totalPrice: number;
@@ -25,7 +25,7 @@ const Confirmation = () => {
 
   const getHistory = async () => {
     try {
-      const res = await axios.get(`http://localhost:3000/user/allorder`, {
+      const res = await axios.get(`${backend_url}/user/allorder`, {
         headers: {
           Authorization: `${localStorage.getItem("token")}`,
         },

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import QuantityButton from '@/components/QuantityButton';
 import Text from '@/components/Text';
 import { useCartStore } from '@/store/cartStore';
+import { backend_url } from '@/config';
 interface MenuItem {
   _id: string;
   name: string;
@@ -41,7 +42,7 @@ const getQuantity = (itemId: string) => {
     const fetchData = async () => {
       try {
         await fetchCart();
-        const response = await axios.get(`http://localhost:3000/user/menu?filter=${search}`, {
+        const response = await axios.get(`${backend_url}/user/menu?filter=${search}`, {
           headers: {
             Authorization: `${localStorage.getItem('token')}`,
           },

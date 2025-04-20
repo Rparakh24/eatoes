@@ -5,6 +5,7 @@ import InputField from '@/components/InputField';
 import SubmitButton from '@/components/SubmitButton';
 import FormHeader from '@/components/FormHeader';
 import SignLink from '@/components/SignLink';
+import { backend_url } from '@/config';
 const SignUp = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -24,7 +25,7 @@ const SignUp = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/user/signup", formData);
+      const response = await axios.post(`${backend_url}/user/signup`, formData);
       localStorage.setItem("token", response.data.token);
       navigate("/menu");
     } catch (error) {

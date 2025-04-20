@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
-
+import { backend_url } from '@/config'; 
 interface CartItem {
   itemId: string;
   name: string;
@@ -23,7 +23,7 @@ export const useCartStore = create<CartState>((set) => ({
 
   fetchCart: async () => {
     try {
-      const res = await axios.get("http://localhost:3000/user/cart", {
+      const res = await axios.get(`${backend_url}/user/cart`, {
         headers: {
           Authorization: `${localStorage.getItem("token")}`,
         },
@@ -41,7 +41,7 @@ export const useCartStore = create<CartState>((set) => ({
   updateItem: async (itemId, change) => {
     try {
       await axios.post(
-        "http://localhost:3000/user/cart",
+        `${backend_url}/user/cart`,
         { itemId, quantity: change },
         {
           headers: {

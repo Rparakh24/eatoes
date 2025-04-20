@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import InputField from '@/components/InputField';
 import SubmitButton from '@/components/SubmitButton';
-
+import { backend_url } from '@/config';
 const Checkout = () => {
   const navigate = useNavigate();
   const [total, setTotal] = useState<number>(0);
@@ -16,7 +16,7 @@ const Checkout = () => {
 
   const fetchCart = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/user/cart', {
+        const res = await axios.get(`${backend_url}/user/cart`, {
         headers: {
           Authorization: `${localStorage.getItem('token')}`,
         },
@@ -35,7 +35,7 @@ const Checkout = () => {
 
     try {
       const res = await axios.post(
-        'http://localhost:3000/user/order',
+        `${backend_url}/user/order`,
         {},
         {
           headers: {

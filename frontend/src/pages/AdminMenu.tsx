@@ -5,6 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import axios from 'axios';
+import { backend_url } from '@/config';
 const foodPalette = {
   primary: '#FF6B35', // warm orange
   secondary: '#FFD166', // soft yellow
@@ -26,11 +27,11 @@ export default function AdminMenu() {
 
   const fetchItems = async() => {
     try{
-      const response = await axios.get("http://localhost:3000/admin/get");
+      const response = await axios.get(`${backend_url}/admin/get`);
       setItems(response.data);
     }catch(e){
       console.log(e);
-    }
+    } 
   }
   useEffect(() => {
     fetchItems();
@@ -46,7 +47,7 @@ export default function AdminMenu() {
   const handleSubmit = async() => {
     console.log(formData);
     try{
-      const response = await axios.post("http://localhost:3000/admin/add",formData);
+      const response = await axios.post(`${backend_url}/admin/add`,formData);
       console.log(response);
     }catch(e){
       console.log(e);
@@ -54,7 +55,7 @@ export default function AdminMenu() {
   };
   const handleDelete = async(itemID:string) => {
     try{
-      const response = await axios.put(`http://localhost:3000/admin/remove?itemId=${itemID}`,);
+      const response = await axios.put(`backend_url/admin/remove?itemId=${itemID}`,);
       console.log(response);
     }catch(e){
       console.log(e);

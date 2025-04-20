@@ -1,7 +1,9 @@
+import SubmitButton from '@/components/SubmitButton';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import QuantityButton from '@/components/QuantityButton';
+import Text from '@/components/Text';
 interface MenuItem {
   _id: string;
   name: string;
@@ -90,8 +92,8 @@ const Menu = () => {
     fetchMenuItems();
   }, []);
 
-  const handleProceedToCheckout = () => {
-    navigate('/checkout');
+  const handleCart = () => {
+    navigate('/cart');
   };
 
   return (
@@ -109,23 +111,12 @@ const Menu = () => {
               {items.map((item: MenuItem) => (
                 <div key={item._id} className="bg-white p-4 rounded-lg shadow-md">
                   <h3 className="text-xl font-semibold text-gray-800 mb-2">{item.name}</h3>
-                  <p className="text-gray-600 mb-2">{item.description}</p>
-                  <p className="text-gray-600 mb-4">₹{item.price}</p>
-
+                  <Text text={item.description} />
+                  <Text text={`₹${item.price}`} />
                   <div className="flex items-center space-x-4 mb-4">
-                    <button
-                      onClick={() => handleDecrease(item)}
-                      className="px-4 py-2 bg-gray-300 text-white rounded-lg"
-                    >
-                      -
-                    </button>
+                    <QuantityButton text="-" onClick={() => handleDecrease(item)} />
                     <span className="text-xl">{cart[item._id] || 0}</span>
-                    <button
-                      onClick={() => handleAdd(item)}
-                      className="px-4 py-2 bg-[#FF5722] text-white rounded-lg"
-                    >
-                      +
-                    </button>
+                    <QuantityButton text="+" onClick={() => handleAdd(item)} />
                   </div>
                 </div>
               ))}
@@ -134,13 +125,8 @@ const Menu = () => {
         ))
       )}
 
-      <div className="mt-8 flex justify-center">
-        <button
-          onClick={handleProceedToCheckout}
-          className="py-3 px-8 bg-[#FF5722] text-white rounded-lg hover:bg-[#FF7043] focus:outline-none focus:ring-4 focus:ring-[#FF5722] transition duration-200"
-        >
-          Proceed to Checkout
-        </button>
+      <div className="mt-8 max-w-lg mx-auto flex justify-center">
+        <SubmitButton text="Proceed to Checkout" onClick={handleCart} />
       </div>
     </div>
   );

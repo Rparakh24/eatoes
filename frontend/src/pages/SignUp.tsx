@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import InputField from '@/components/InputField';
 import SubmitButton from '@/components/SubmitButton';
 import FormHeader from '@/components/FormHeader';
-
+import SignLink from '@/components/SignLink';
 const SignUp = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -72,9 +72,7 @@ const SignUp = () => {
       </div>
       <p className="text-center text-sm text-gray-600">
         Already have an account?{' '}
-        <a href="/login" className="text-[#FF5722] hover:text-[#FF7043]">
-          Log in here
-        </a>
+        <SignLink text="Sign in here" link="/signin" />
       </p>
     </div>
   );

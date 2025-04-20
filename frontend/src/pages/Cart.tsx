@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Text from '@/components/Text';
+import QuantityButton from '@/components/QuantityButton';
+import SubmitButton from '@/components/SubmitButton';
 interface CartItem {
   itemId: string;
   name: string;
@@ -68,22 +71,12 @@ const Cart = () => {
             <div key={item.itemId} className="flex justify-between items-center bg-white p-4 rounded-lg shadow">
               <div>
                 <h2 className="text-lg font-semibold text-gray-800">{item.name}</h2>
-                <p className="text-gray-600">₹{item.price} x {item.quantity}</p>
+                <Text text={`₹${item.price} x ${item.quantity}`} />
               </div>
               <div className="flex items-center gap-3">
-                <button
-                  className="bg-gray-300 text-white px-3 py-1 rounded"
-                  onClick={() => updateCart(item.itemId, -1)}
-                >
-                  -
-                </button>
+                <QuantityButton text="-" onClick={() => updateCart(item.itemId, -1)} />
                 <span className="text-lg">{item.quantity}</span>
-                <button
-                  className="bg-[#FF5722] text-white px-3 py-1 rounded"
-                  onClick={() => updateCart(item.itemId, 1)}
-                >
-                  +
-                </button>
+                <QuantityButton text="+" onClick={() => updateCart(item.itemId, 1)} />
               </div>
               <div className="text-gray-800 font-medium">₹{item.itemTotal}</div>
             </div>
@@ -94,13 +87,8 @@ const Cart = () => {
             <span>₹{total}</span>
           </div>
 
-          <div className="flex justify-center">
-            <button
-              onClick={()=>navigate("/checkout")}
-              className="mt-4 bg-[#FF5722] hover:bg-[#FF7043] text-white px-8 py-3 rounded-lg transition duration-200"
-            >
-              Place Order
-            </button>
+          <div className="flex justify-center max-w-lg mx-auto">
+            <SubmitButton onClick={()=>navigate("/checkout")} text="Place Order"/>
           </div>
         </div>
       )}

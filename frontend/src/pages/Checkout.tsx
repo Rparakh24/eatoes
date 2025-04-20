@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import InputField from '@/components/InputField';
+import SubmitButton from '@/components/SubmitButton';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -55,49 +57,38 @@ const Checkout = () => {
 
       <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
         <div>
-          <label className="block font-medium text-gray-700 mb-1">Full Name</label>
-          <input
+          <InputField
+            name="name"
+            label="Full Name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
             placeholder="Enter your name"
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium text-gray-700 mb-1">Phone Number</label>
-          <input
-            type="tel"
+          />    
+          <InputField
+            name="phone"
+            label="Phone Number"
             value={phone}
+            type="tel"
             onChange={(e) => setPhone(e.target.value)}
-            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
             placeholder="Enter your phone number"
           />
+          <InputField
+            name="address"
+            label="Address" 
+            value={address}
+            type="text"
+            onChange={(e) => setAddress(e.target.value)}
+            placeholder="Enter your address"
+          />
         </div>
 
-        <div>
-            <label className="block font-medium text-gray-700 mb-1">Address</label>
-            <input
-            type="tel"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
-            placeholder="Enter your address"
-            />          
-          </div>
 
         <div className="flex justify-between items-center text-lg font-semibold pt-4 border-t">
           <span>Total</span>
           <span>₹{total}</span>
         </div>
-
-        <button
-          onClick={placeOrder}
-          className="w-full mt-4 bg-[#FF5722] hover:bg-[#FF7043] text-white px-6 py-3 rounded-lg transition duration-200"
-        >
-          Place Order
-        </button>
+        <SubmitButton onClick={placeOrder} text="Place Order"/>
       </div>
     </div>
   );

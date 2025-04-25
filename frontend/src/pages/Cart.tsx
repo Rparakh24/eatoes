@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import Text from '@/components/Text';
 import QuantityButton from '@/components/QuantityButton';
 import SubmitButton from '@/components/SubmitButton';
-import { useCartStore } from '@/store/cartStore';
 import { backend_url } from '@/config';
 
 interface CartItem {

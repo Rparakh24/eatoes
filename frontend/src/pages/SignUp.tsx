@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import InputField from '@/components/InputField';
 import SubmitButton from '@/components/SubmitButton';
 import FormHeader from '@/components/FormHeader';
-import SignLink from '@/components/SignLink';
 import { backend_url } from '@/config';
 const SignUp = () => {
   const navigate = useNavigate();

@@ -73,7 +73,7 @@ const SignUp = () => {
       </div>
       <p className="text-center text-sm text-gray-600">
         Already have an account?{' '}
-        <SignLink text="Sign in here" link="/signin" />
+        <p onClick={()=>{navigate("/signin")}} className="text-blue-500 cursor-pointer">Sign In</p>
       </p>
     </div>
   );

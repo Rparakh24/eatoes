@@ -28,7 +28,6 @@ const Cart = () => {
   const [total, setTotal] = useState<number>(0);
   const [localQuantities, setLocalQuantities] = useState<{ [itemId: string]: number }>({});
 
-  const updateItem = useCartStore((state) => state.updateItem);
 
   const fetchCart = async () => {
     try {

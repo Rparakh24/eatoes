@@ -19,19 +19,28 @@ const Menu = () => {
   const cart = useCartStore((state) => state.cart);
   const fetchCart = useCartStore((state) => state.fetchCart);
   const updateItem = useCartStore((state) => state.updateItem);
+  const [localQuantities, setLocalQuantities] = useState<{ [itemId: string]: number }>({});
+
 
 const handleAdd = (item: MenuItem) => {
+  const currentQty = localQuantities[item._id] ?? getQuantity(item._id);
+  const newQty = currentQty + 1;
+  setLocalQuantities((prev) => ({ ...prev, [item._id]: newQty }));
   updateItem(item._id, 1);
 };
 
 const handleDecrease = (item: MenuItem) => {
+  const currentQty = localQuantities[item._id] ?? getQuantity(item._id);
+  const newQty = Math.max(currentQty - 1, 0);
+  setLocalQuantities((prev) => ({ ...prev, [item._id]: newQty }));
   updateItem(item._id, -1);
 };
 
+
 const getQuantity = (itemId: string) => {
-  const cartItem = cart.find((item) => item.itemId === itemId);
-  return cartItem ? cartItem.quantity : 0;
+  return localQuantities[itemId] ?? cart.find((item) => item.itemId === itemId)?.quantity ?? 0;
 };
+
   const navigate = useNavigate();
   const [menuItems, setMenuItems] = useState<{ [category: string]: MenuItem[] }>({});
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,7 +97,7 @@ const getQuantity = (itemId: string) => {
                   <Text text={`₹${item.price}`} />
                   <div className="flex items-center space-x-4 mb-4">
                     <QuantityButton text="-" onClick={() => handleDecrease(item)} />
-                    <span className="text-xl">{getQuantity(item._id) || 0}</span>
+                    <span className="text-xl">{getQuantity(item._id)}</span>
                     <QuantityButton text="+" onClick={() => handleAdd(item)} />
                   </div>
                 </div>
